@@ -1,1 +1,0 @@
-pycodestyle --first main.py && pycodestyle . --max-line-length=120 && python3 main.py encode --input_file ./input.txt --output_file ./output.txt --cipher caesar --key 5

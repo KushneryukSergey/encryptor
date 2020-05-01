@@ -27,5 +27,5 @@ def define_alphabet(language: str):
         raise TypeError("Incorrect language")
 
 
-def alphabet_positions(alphabet=ALPHABET) -> dict:
-    return {alphabet[i]: i for i in range(len(alphabet))}
+def alphabet_positions() -> dict:
+    return {ALPHABET[i]: i for i in range(len(ALPHABET))}

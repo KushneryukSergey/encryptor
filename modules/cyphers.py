@@ -1,4 +1,4 @@
-import alphabet
+from modules import alphabet
 import operator
 
 
@@ -7,11 +7,11 @@ def encode_caesar(text: str, key: int, lang: str):
     base = len(alphabet.ALPHABET)
     pos = alphabet.alphabet_positions()
     result = ""
-    for i in text:
-        if i in alphabet.ALPHABET:
-            result += alphabet.ALPHABET[(pos[i] + key) % base]
+    for letter in text:
+        if letter.lower() in alphabet.ALPHABET:
+            result += alphabet.ALPHABET[(pos[letter.lower()] + key) % base]
         else:
-            result += i
+            result += letter
     return result
 
 
@@ -27,11 +27,11 @@ def encode_vv(text: str, key: str, lang: str, action: str, vernam=False):
     pos = alphabet.alphabet_positions()
     index = 0
     result = ""
-    for i in text:
-        if i in alphabet.ALPHABET:
-            result += alphabet.ALPHABET[ops[action](pos[i], pos[key[index]]) % base]
+    for letter in text:
+        if letter.lower() in alphabet.ALPHABET:
+            result += alphabet.ALPHABET[ops[action](pos[letter.lower()], pos[key[index]]) % base]
         else:
-            result += i
+            result += letter
         index += 1
         if not vernam and index == len(key):
             index = 0
@@ -49,13 +49,13 @@ def decode_vigenere(text: str, key: str, lang: str):
 def encode_vernam(text: str, key: str, lang: str):
     if len(text) > len(key):
         raise TypeError("Incorrect key for Vernam cypher")
-    return encode_vv(text, key, lang, "+", True)
+    return encode_vv(text, key, lang, "+", vernam=True)
 
 
 def decode_vernam(text: str, key: str, lang: str):
     if len(text) > len(key):
         raise TypeError("Incorrect key for Vernam cypher")
-    return encode_vv(text, key, lang, "-", True)
+    return encode_vv(text, key, lang, "-", vernam=True)
 
 
 def encode(cypher: str, text: str, key, lang: str):
@@ -64,7 +64,8 @@ def encode(cypher: str, text: str, key, lang: str):
     elif cypher == "vigenere":
         return encode_vigenere(text, key, lang)
     elif cypher == "vernam":
-        return encode_vernam(text, key, lang)
+        with open(key, "r") as key_file:
+            return encode_vernam(text, key_file.read(), lang)
     else:
         raise TypeError("Incorrect cypher")
 
@@ -75,6 +76,7 @@ def decode(cypher: str, text: str, key, lang: str):
     elif cypher == "vigenere":
         return decode_vigenere(text, key, lang)
     elif cypher == "vernam":
-        return decode_vernam(text, key, lang)
+        with open(key, "r") as key_file:
+            return decode_vernam(text, key_file.read(), lang)
     else:
         raise TypeError("Incorrect cypher")

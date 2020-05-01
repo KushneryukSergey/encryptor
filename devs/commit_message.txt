@@ -1,0 +1,5 @@
+PEP8 problems fixed
+KeyError while encoding and decoding fixed
+Added console input by default
+Added texts for counting frequencies
+Added opportunity to use external file with frequencies
