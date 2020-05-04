@@ -1,0 +1,3 @@
+fixed
+__pycache__ and .idea folders removed
+consistent using of encode and decode returns original text
