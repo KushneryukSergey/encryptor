@@ -1,4 +1,4 @@
 fixed
-__pycache__ and .idea folders removed
+__pycache__, modules/__pycache__ and .idea folders removed
 consistent using of encode and decode returns original text
 extra line break removed
