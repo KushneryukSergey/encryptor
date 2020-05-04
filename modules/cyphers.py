@@ -8,8 +8,8 @@ def encode_caesar(text: str, key: int, lang: str):
     pos = alphabet.alphabet_positions()
     result = ""
     for letter in text:
-        if letter.lower() in alphabet.ALPHABET:
-            result += alphabet.ALPHABET[(pos[letter.lower()] + key) % base]
+        if letter in alphabet.ALPHABET:
+            result += alphabet.ALPHABET[(pos[letter] + key) % base]
         else:
             result += letter
     return result
@@ -28,8 +28,8 @@ def encode_vv(text: str, key: str, lang: str, action: str, vernam=False):
     index = 0
     result = ""
     for letter in text:
-        if letter.lower() in alphabet.ALPHABET:
-            result += alphabet.ALPHABET[ops[action](pos[letter.lower()], pos[key[index]]) % base]
+        if letter in alphabet.ALPHABET:
+            result += alphabet.ALPHABET[ops[action](pos[letter], pos[key[index]]) % base]
         else:
             result += letter
         index += 1

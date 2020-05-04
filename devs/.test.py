@@ -6,3 +6,5 @@ with open("../texts/The_Breathing_Method-Stephen_King.txt", "r") as file:
 with open("freq.json", "r") as freq:
     kings_frequencies = json.load(freq)
 print(kings_frequencies)
+
+print(len("\n"))

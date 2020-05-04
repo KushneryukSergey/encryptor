@@ -1,11 +1,12 @@
 from sys import stdin
+from string import whitespace
 
 
 def input_text(file: str):
     if file == "CONSOLE":
-        text = ""
-        for line in stdin:
-            text += line
+        text = "".join(stdin)
+        while text[-1] in whitespace:
+            text = text[0:-1]
     else:
         f = open(file, "r")
         text = f.read()
