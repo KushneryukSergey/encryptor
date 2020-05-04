@@ -1,4 +1,5 @@
 /.idea/
 /__pycache__/
-/devs/*
-!/devs/message.txt
+/modules/__pycache__/
+/devs/freq.json
+/devs/test.txt
