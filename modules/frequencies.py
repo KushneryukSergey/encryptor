@@ -10,8 +10,8 @@ def __count_freq__(text: str, lang: str):
     count = {i: 0 for i in alphabet.ALPHABET}
     counter = 0
     for letter in text:
-        if letter.lower() in alphabet.ALPHABET:
-            count[letter.lower()] += 1
+        if letter in alphabet.ALPHABET:
+            count[letter] += 1
             counter += 1
     return {i: count[i]/counter for i in alphabet.ALPHABET}
 
@@ -33,12 +33,19 @@ def check(lang: str, freq_file):
 def bias(text: str, lang: str) -> float:
     result = 0.0
     text_freq = __count_freq__(text, lang)
-    standard_freq = __standard_freq__()
+    standard_freq = __saved_freq__()
     for letter in alphabet.ALPHABET:
         result += (text_freq.get(letter, 0) - standard_freq.get(letter, 0))**2
     return result
 
 
-def __standard_freq__():
+def __saved_freq__():
     with open(FREQ_PATH, "r") as read_file:
         return json.load(read_file)
+
+
+if __name__ == "__main__":
+    with open("../texts/The_Breathing_Method-Stephen_King.txt", "r") as f:
+        book = "".join(f.read())
+    count_frequencies(book, "en", "../devs/freq.json")
+    print(__saved_freq__())

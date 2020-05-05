@@ -2,37 +2,48 @@ from modules import cracking, frequencies, check_properties, cyphers
 from modules.tools import input_text, output_text
 
 
-PROGRAM_ARGUMENTS = check_properties.argument_parsing()
+ENCODE = "encode"
+DECODE = "decode"
+COUNT_F = "count_frequencies"
+CRACK = "cracking"
 
-if PROGRAM_ARGUMENTS.WORKING_MODE == "encode":                # ENCODE WORKING MODE
-    original_text = input_text(PROGRAM_ARGUMENTS.INPUT_FILE)
-    output_text(PROGRAM_ARGUMENTS.OUTPUT_FILE,
-                cyphers.encode(PROGRAM_ARGUMENTS.CYPHER,
-                               original_text,
-                               PROGRAM_ARGUMENTS.KEY,
-                               PROGRAM_ARGUMENTS.LANGUAGE))
 
-elif PROGRAM_ARGUMENTS.WORKING_MODE == "decode":              # DECODE WORKING MODE
-    encrypted_text = input_text(PROGRAM_ARGUMENTS.INPUT_FILE)
-    output_text(PROGRAM_ARGUMENTS.OUTPUT_FILE,
-                cyphers.decode(PROGRAM_ARGUMENTS.CYPHER,
-                               encrypted_text,
-                               PROGRAM_ARGUMENTS.KEY,
-                               PROGRAM_ARGUMENTS.LANGUAGE))
+def main():
+    program_arguments = check_properties.argument_parsing()
 
-elif PROGRAM_ARGUMENTS.WORKING_MODE == "count_frequencies":   # COUNTING LETTER FREQUENCIES WORKING MODE
-    encrypted_text = input_text(PROGRAM_ARGUMENTS.INPUT_FILE)
-    frequencies.count_frequencies(encrypted_text,
-                                  PROGRAM_ARGUMENTS.LANGUAGE,
-                                  PROGRAM_ARGUMENTS.FREQ_FILE)
+    if program_arguments.working_mode == ENCODE:     # ENCODE WORKING MODE
+        original_text = input_text(program_arguments.input_file)
+        output_text(program_arguments.output_file,
+                    cyphers.encode(program_arguments.cypher,
+                                   original_text,
+                                   program_arguments.key,
+                                   program_arguments.language))
 
-elif PROGRAM_ARGUMENTS.WORKING_MODE == "cracking":            # CRACKING CYPHER WORKING MODE
-    encrypted_text = input_text(PROGRAM_ARGUMENTS.INPUT_FILE)
-    output_text(PROGRAM_ARGUMENTS.OUTPUT_FILE,
-                cracking.crack(PROGRAM_ARGUMENTS.CYPHER,
-                               encrypted_text,
-                               PROGRAM_ARGUMENTS.LANGUAGE,
-                               PROGRAM_ARGUMENTS.FREQ_FILE))
+    elif program_arguments.working_mode == DECODE:   # DECODE WORKING MODE
+        encrypted_text = input_text(program_arguments.input_file)
+        output_text(program_arguments.output_file,
+                    cyphers.decode(program_arguments.cypher,
+                                   encrypted_text,
+                                   program_arguments.key,
+                                   program_arguments.language))
 
-else:
-    raise TypeError("Incorrect working mode")
+    elif program_arguments.working_mode == COUNT_F:  # COUNTING LETTER FREQUENCIES WORKING MODE
+        encrypted_text = input_text(program_arguments.input_file)
+        frequencies.count_frequencies(encrypted_text,
+                                      program_arguments.language,
+                                      program_arguments.freq_file)
+
+    elif program_arguments.working_mode == CRACK:    # CRACKING CYPHER WORKING MODE
+        encrypted_text = input_text(program_arguments.input_file)
+        output_text(program_arguments.output_file,
+                    cracking.crack(program_arguments.cypher,
+                                   encrypted_text,
+                                   program_arguments.language,
+                                   program_arguments.freq_file))
+
+    else:
+        raise TypeError("Incorrect working mode")
+
+
+if __name__ == "__main__":
+    main()

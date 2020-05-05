@@ -1,4 +1,3 @@
-fixed
-__pycache__, modules/__pycache__ and .idea folders removed
-consistent using of encode and decode returns original text
-extra line break removed
+alphabet and variables fixed
+alphabets changed to <uppercase><lowercase><digits><punctuation_signs>
+PROGRAM_ARGUMENTS and its attributes' names changed to lowercase
