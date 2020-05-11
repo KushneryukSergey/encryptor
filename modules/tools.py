@@ -2,25 +2,26 @@ from sys import stdin
 from string import whitespace
 
 
-CONSOLE = "console"
+CONSOLE = None
 
 
-def input_text(file: str):
-    if file == CONSOLE:
-        text = "".join(stdin)
-        while text[-1] in whitespace:
-            text = text[0:-1]
+def read_text(file):
+    if file is CONSOLE:
+        text = stdin.read()
+        text = text.rstrip(whitespace)
     else:
-        f = open(file, "r")
-        text = f.read()
-        f.close()
+        with open(file, "r") as read_file:
+            text = read_file.read()
     return text
 
 
-def output_text(file: str, text: str):
-    if file == CONSOLE:
+def print_text(file, text: str):
+    if file is CONSOLE:
         print(text)
     else:
-        f = open(file, "w")
-        f.write(text)
-        f.close()
+        with open(file, "w") as read_file:
+            read_file.write(text)
+
+
+if __name__ == "__main__":
+    print(whitespace)

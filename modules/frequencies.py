@@ -1,51 +1,53 @@
 import json
 import os
-from modules import alphabet
+from modules.alphabet import Alphabet
+from collections import defaultdict
 
-FREQ_PATH = ""
 
-
-def __count_freq__(text: str, lang: str):
-    alphabet.define_alphabet(lang)
-    count = {i: 0 for i in alphabet.ALPHABET}
+def count_frequencies(text: str, lang: str) -> dict:
+    count = {pos: 0 for pos in range(Alphabet.size())}
     counter = 0
+    result = []
     for letter in text:
-        if letter in alphabet.ALPHABET:
-            count[letter] += 1
+        pos = Alphabet.get_pos_by(letter)
+        if pos is not None:
+            count[pos] += 1
             counter += 1
-    return {i: count[i]/counter for i in alphabet.ALPHABET}
+    return {Alphabet.get_letter_by(pos): frequency / counter for pos, frequency in count.items()}
 
 
-def count_frequencies(text: str, lang: str, freq_path: str):
-    global FREQ_PATH
-    FREQ_PATH = freq_path
-    with open(FREQ_PATH, "w") as freq_file:
-        json.dump(__count_freq__(text, lang), freq_file)
-
-
-def check(lang: str, freq_file):
-    global FREQ_PATH
-    FREQ_PATH = freq_file
-    if not (os.path.isfile(FREQ_PATH) and os.path.getsize(FREQ_PATH) > 0):
-        raise TypeError("There is no frequencies to crack caesar cypher")
-
-
-def bias(text: str, lang: str) -> float:
-    result = 0.0
-    text_freq = __count_freq__(text, lang)
-    standard_freq = __saved_freq__()
-    for letter in alphabet.ALPHABET:
-        result += (text_freq.get(letter, 0) - standard_freq.get(letter, 0))**2
+def shift_freq(frequencies: dict, shift: int) -> dict:
+    result = dict()
+    for letter, frequency in frequencies.items():
+        result[Alphabet.get_letter_by(Alphabet.get_pos_by(letter) + shift)] = frequency
     return result
 
 
-def __saved_freq__():
-    with open(FREQ_PATH, "r") as read_file:
+def save_frequencies(text: str, lang: str, freq_path: str):
+    with open(freq_path, "w") as freq_file:
+        json.dump(count_frequencies(text, lang), freq_file)
+
+
+def check(lang: str, freq_path: str):
+    if not (os.path.isfile(freq_path) and os.path.getsize(freq_path) > 0):
+        raise TypeError("There is no frequencies to crack caesar cypher")
+
+
+def count_bias(first_freq: dict, second_freq: dict) -> float:
+    result = 0.0
+    for letter in first_freq.keys():
+        result += (first_freq.get(letter, 0) - second_freq.get(letter, 0))**2
+    return result
+
+
+def get_saved_freq(freq_path: str):
+    with open(freq_path, "r") as read_file:
         return json.load(read_file)
 
 
 if __name__ == "__main__":
-    with open("../texts/The_Breathing_Method-Stephen_King.txt", "r") as f:
-        book = "".join(f.read())
-    count_frequencies(book, "en", "../devs/freq.json")
-    print(__saved_freq__())
+    Alphabet.make_alphabet("en")
+    with open("../texts/The_Breathing_Method-Stephen_King.txt", "r") as file:
+        book = file.read()
+    save_frequencies(book, "en", "../devs/freq.json")
+    print(get_saved_freq("../devs/freq.json"))

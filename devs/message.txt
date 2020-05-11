@@ -1,3 +1,1 @@
-alphabet and variables fixed
-alphabets changed to <uppercase><lowercase><digits><punctuation_signs>
-PROGRAM_ARGUMENTS and its attributes' names changed to lowercase
+most issues fixed

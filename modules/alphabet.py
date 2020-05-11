@@ -1,67 +1,78 @@
 import string
 
-
-ALPHABET = ""
-_ALPHABET_DEFINED = False
 ENGLISH = "en"
 RUSSIAN = "ru"
 
 
-def russian_lowercase_alphabet() -> str:
-    return "".join(["%c" % (i + 1072 - (i > 6)) if i != 6 else "ё" for i in range(0, 32)])
+class Alphabet:
+    _alphabet = ""
+    _is_alphabet_defined = False
+    _positions = {}
 
+    @classmethod
+    def _russian_lowercase_alphabet(cls) -> str:
+        return "".join([chr(i + ord("а") - (i > 6) if i != 6 else ord("ё")) for i in range(0, 32)])
 
-def russian_uppercase_alphabet() -> str:
-    return russian_lowercase_alphabet().upper()
+    @classmethod
+    def _russian_uppercase_alphabet(cls) -> str:
+        return cls._russian_lowercase_alphabet().upper()
 
+    @classmethod
+    def _mixed_russian_alphabet(cls) -> str:
+        return "".join([upper_letter + lower_letter for upper_letter, lower_letter in
+                        zip(cls._russian_uppercase_alphabet(), cls._russian_lowercase_alphabet())])
 
-def mixed_russian_alphabet() -> str:
-    return "".join([upper_letter+lower_letter for upper_letter, lower_letter in
-                    zip(russian_uppercase_alphabet(), russian_lowercase_alphabet())])
+    @classmethod
+    def _russian_alphabet(cls) -> str:
+        return cls._russian_uppercase_alphabet() + cls._russian_lowercase_alphabet()
 
+    @classmethod
+    def _english_lowercase_alphabet(cls) -> str:
+        return string.ascii_lowercase
 
-def russian_alphabet() -> str:
-    return russian_uppercase_alphabet() + russian_lowercase_alphabet()
+    @classmethod
+    def _english_uppercase_alphabet(cls) -> str:
+        return string.ascii_uppercase
 
+    @classmethod
+    def _mixed_english_alphabet(cls) -> str:
+        return "".join([upper_letter + lower_letter for upper_letter, lower_letter in
+                        zip(cls._english_uppercase_alphabet(), cls._english_lowercase_alphabet())])
 
-def english_lowercase_alphabet() -> str:
-    return string.ascii_lowercase
+    @classmethod
+    def _english_alphabet(cls) -> str:
+        return cls._english_uppercase_alphabet() + cls._english_lowercase_alphabet()
 
+    @classmethod
+    def size(cls):
+        return len(cls._alphabet)
 
-def english_uppercase_alphabet() -> str:
-    return string.ascii_uppercase
+    @classmethod
+    def make_alphabet(cls, language: str) -> None:
+        if cls._is_alphabet_defined:
+            return
+        if language == ENGLISH:
+            cls._alphabet = cls._english_alphabet()
+        elif language == RUSSIAN:
+            cls._alphabet = cls._russian_alphabet()
+        else:
+            raise TypeError("Incorrect language")
+        cls._alphabet += string.digits + string.punctuation
+        cls._make_alphabet_positions()
+        cls._is_alphabet_defined = True
 
+    @classmethod
+    def _make_alphabet_positions(cls) -> None:
+        cls._positions = {letter: index for index, letter in enumerate(cls._alphabet)}
 
-def mixed_english_alphabet() -> str:
-    return "".join([upper_letter+lower_letter for upper_letter, lower_letter in
-                    zip(english_uppercase_alphabet(), english_lowercase_alphabet())])
+    @classmethod
+    def get_pos_by(cls, letter):
+        return cls._positions.get(letter, None)
 
-
-def english_alphabet() -> str:
-    return english_uppercase_alphabet() + english_lowercase_alphabet()
-
-
-def define_alphabet(language: str):
-    global _ALPHABET_DEFINED
-    if _ALPHABET_DEFINED:
-        return
-    global ALPHABET
-    if language == ENGLISH:
-        ALPHABET = english_alphabet()
-    elif language == RUSSIAN:
-        ALPHABET = russian_alphabet()
-    else:
-        raise TypeError("Incorrect language")
-    ALPHABET += string.digits + string.punctuation
-    _ALPHABET_DEFINED = True
-
-
-def alphabet_positions() -> dict:
-    return {ALPHABET[i]: i for i in range(len(ALPHABET))}
+    @classmethod
+    def get_letter_by(cls, pos) -> str:
+        return cls._alphabet[pos % len(cls._alphabet)]
 
 
 if __name__ == "__main__":
-    print(russian_alphabet())
-    print(english_alphabet())
-    define_alphabet(ENGLISH)
-    print(ALPHABET)
+    print("{0:c}".format(1072))
