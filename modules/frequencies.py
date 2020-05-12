@@ -1,11 +1,10 @@
 import json
 import os
 from modules.alphabet import Alphabet
-from collections import defaultdict
 
 
 def count_frequencies(text: str, lang: str) -> dict:
-    count = {pos: 0 for pos in range(Alphabet.size())}
+    count = dict.fromkeys(range(Alphabet.size()), 0)
     counter = 0
     result = []
     for letter in text:

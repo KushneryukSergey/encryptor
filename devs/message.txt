@@ -1,1 +1,1 @@
-most issues fixed
+dict init by dict.fromkeys added
