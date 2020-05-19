@@ -1,5 +1,4 @@
 from modules.alphabet import Alphabet
-import operator
 
 
 def _encode_caesar(text: str, key, lang: str):
@@ -9,9 +8,8 @@ def _encode_caesar(text: str, key, lang: str):
         raise TypeError("Invalid key for caesar cypher\n")
     result = []
     for letter in text:
-        pos = Alphabet.get_pos_by(letter)
-        if pos is not None:
-            result.append(Alphabet.get_letter_by(pos + key))
+        if Alphabet.contains(letter):
+            result.append(Alphabet.shift_letter_by(letter, key))
         else:
             result.append(letter)
     return "".join(result)
@@ -27,21 +25,17 @@ def _decode_caesar(text: str, key, lang: str):
 
 def transform(text: str, key, lang: str, is_encode: bool, vernam=False):
     if is_encode:
-        ops = operator.add
+        sign = 1
     else:
-        ops = operator.sub
-    index = 0
+        sign = -1
+    shifts = [Alphabet.get_pos_by(letter) for letter in key]
     result = []
-    for letter in text:
-        pos = Alphabet.get_pos_by(letter)
-        if pos is not None:
-            result.append(Alphabet.get_letter_by(ops(pos, Alphabet.get_pos_by(key[index]))))
+    for index, letter in enumerate(text):
+        if Alphabet.contains(letter):
+            result.append(Alphabet.shift_letter_by(letter, sign * shifts[index % len(key)]))
         else:
             result.append(letter)
-        index += 1
-        if not vernam and index == len(key):
-            index = 0
-        return "".join(result)
+    return "".join(result)
 
 
 def _encode_vigenere(text: str, key, lang: str):
@@ -49,7 +43,7 @@ def _encode_vigenere(text: str, key, lang: str):
 
 
 def _decode_vigenere(text: str, key, lang: str):
-    return transform(text, key, lang, is_encode=True)
+    return transform(text, key, lang, is_encode=False)
 
 
 def _encode_vernam(text: str, key, lang: str):

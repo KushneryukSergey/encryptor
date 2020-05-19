@@ -21,7 +21,3 @@ def print_text(file, text: str):
     else:
         with open(file, "w") as read_file:
             read_file.write(text)
-
-
-if __name__ == "__main__":
-    print(whitespace)
