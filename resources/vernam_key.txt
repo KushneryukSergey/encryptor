@@ -1,0 +1,1 @@
+this is vernam key with length 42 symbols

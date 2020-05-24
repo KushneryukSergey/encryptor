@@ -24,13 +24,18 @@ def shift_freq(frequencies: dict, shift: int) -> dict:
 
 
 def save_frequencies(text: str, lang: str, freq_path: str):
-    with open(freq_path, "w") as freq_file:
+    with open(freq_path, 'w') as freq_file:
         json.dump(count_frequencies(text, lang), freq_file)
+
+
+def get_saved_freq(freq_path: str):
+    with open(freq_path, 'r') as freq_file:
+        return json.load(freq_file)
 
 
 def check(lang: str, freq_path: str):
     if not (os.path.isfile(freq_path) and os.path.getsize(freq_path) > 0):
-        raise TypeError("There is no frequencies to crack caesar cypher")
+        raise TypeError('There is no frequencies to crack caesar cypher')
 
 
 def count_bias(first_freq: dict, second_freq: dict) -> float:

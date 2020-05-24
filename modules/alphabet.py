@@ -11,15 +11,15 @@ class _ClassProperty(property):
 
 
 class Alphabet:
-    ENGLISH = "en"
-    RUSSIAN = "ru"
-    _alphabet = ""
+    ENGLISH = 'en'
+    RUSSIAN = 'ru'
+    _alphabet = ''
     _is_alphabet_defined = False
     _positions = {}
 
     @classmethod
     def _russian_lowercase_alphabet(cls) -> str:
-        return "".join([chr(i + ord("а") - (i > 6) if i != 6 else ord("ё")) for i in range(33)])
+        return ''.join([chr(i + ord('а') - (i > 6) if i != 6 else ord('ё')) for i in range(33)])
 
     @classmethod
     def _russian_uppercase_alphabet(cls) -> str:
@@ -27,7 +27,7 @@ class Alphabet:
 
     @classmethod
     def _mixed_russian_alphabet(cls) -> str:
-        return "".join([upper_letter + lower_letter for upper_letter, lower_letter in
+        return ''.join([upper_letter + lower_letter for upper_letter, lower_letter in
                         zip(cls._russian_uppercase_alphabet(), cls._russian_lowercase_alphabet())])
 
     @classmethod
@@ -44,7 +44,7 @@ class Alphabet:
 
     @classmethod
     def _mixed_english_alphabet(cls) -> str:
-        return "".join([upper_letter + lower_letter for upper_letter, lower_letter in
+        return ''.join([upper_letter + lower_letter for upper_letter, lower_letter in
                         zip(cls._english_uppercase_alphabet(), cls._english_lowercase_alphabet())])
 
     @classmethod
@@ -68,7 +68,7 @@ class Alphabet:
         elif language == cls.RUSSIAN:
             cls._alphabet = cls._russian_alphabet()
         else:
-            raise TypeError("Incorrect language")
+            raise TypeError('Incorrect language')
         cls._alphabet += string.digits + string.punctuation
         cls._make_alphabet_positions()
         cls._is_alphabet_defined = True
