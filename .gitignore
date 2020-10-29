@@ -1,2 +1,6 @@
 /.idea/
 /__pycache__/
+/modules/__pycache__/
+/devs/freq.json
+/devs/test.txt
+/devs/test.py

@@ -35,3 +35,27 @@ Now available only cracking of Caesar cypher; Vigenere cypher will be added soon
 
 ### Extra
 You can precisely inspect working modes and other arguments by using `python3 main.py <WORKING MODE> --help`
+
+### Testing strings
+You can check how code works with next command lines
+
+>All commands should be executed from root folder
+
+Caesar cypher test
+```
+python3 main.py encode -o resources/caesar_test.txt -c caesar -k 3
+python3 main.py decode -i resources/caesar_test.txt -c caesar -k 3
+```
+Vigenere cypher test
+```
+python3 main.py encode -o resources/vigenere_test.txt -c vigenere -k hello
+python3 main.py decode -i resources/vigenere_test.txt -c vigenere -k hello
+```
+Vernam cypher test
+```
+python3 main.py encode -o resources/vernam_test.txt -c vernam -k resources/vernam_key.txt
+python3 main.py decode -i resources/vernam_test.txt -c vernam -k resources/vernam_key.txt
+```
+
+> You'll find encrypted text in relevant file in every case. After using first command you should input your text and
+> push Ctrl+D. After using second command you'll get back your text
